@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+</head>
+<body class="bg-gray-900 text-white">
+    <form action="/profile" method="get">
+        
+    </form>
+    <!-- Top Header -->
+    <div class="relative bg-blue-500 h-16 flex items-center px-4">
+        <a href="/" class="absolute left-4 text-white">
+            <i class="ri-home-heart-line text-3xl"></i>
+        </a>
+        <a href="#" class="absolute right-4 text-white">
+            <i class="ri-search-eye-fill text-3xl"></i>
+        </a>
+    </div>
+
+    <!-- Profile Section -->
+    <div class="bg-gray-800 p-6">
+        <div class="flex items-center space-x-6">
+            <img src="https://via.placeholder.com/100" alt="Profile Picture" class="w-24 h-24 rounded-full border-4 border-gray-700">
+            <div class="flex-1">
+                <h1 class="text-2xl font-bold"><%= user.username %></h1>
+                <p class="text-sm text-gray-400"><%= user.email %></p>
+                <div class="mt-4 space-x-4">
+                    <a href="/edit" class="px-4 py-2 bg-blue-500 rounded-full text-sm font-bold">Edit Profile</a>
+                    <a href="/logout" class="px-4 py-2 bg-gray-600 rounded-full text-sm font-bold">Get Jansi</a>
+                </div>
+            </div>
+        </div>
+        <p class="mt-4 text-sm">Founder | Passionate about web development and design.</p>
+        <p class="mt-2 text-sm text-gray-400"><i class="ri-briefcase-line mr-2"></i>Entrepreneur <span class="text-white">Bhopal</span></p>
+        <div class="mt-4 flex space-x-6 text-gray-400">
+            <p class="flex items-center space-x-2">
+                <span class="text-white font-bold">17</span>
+                <span class="text-sm">Followers</span>
+            </p>
+            <p class="flex items-center space-x-2">
+                <span class="text-white font-bold">23</span>
+                <span class="text-sm">Following</span>
+            </p>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="bg-gray-700 text-gray-400 flex justify-around text-sm border-b border-gray-600">
+        <button class="py-3 w-full hover:text-white">Replies</button>
+        <button class="py-3 w-full hover:text-white">Highlights</button>
+        <button class="py-3 w-full hover:text-white">Articles</button>
+        <button class="py-3 w-full hover:text-white">Media</button>
+        <button class="py-3 w-full hover:text-white">Likes</button>
+    </div>
+
+    <!-- Tweet Section -->
+    <div class="bg-gray-800 p-6 border-b border-gray-700">
+        <p class="text-sm text-gray-400">You reported</p>
+        <div class="mt-4 flex space-x-4">
+            <img src="https://via.placeholder.com/50" alt="User Profile" class="w-12 h-12 rounded-full border-2 border-gray-700">
+            <div class="flex-1">
+                <h1 class="text-sm font-bold"><%= user.username %></h1>
+                <p class="text-sm text-gray-300">This is a reported tweet example. Ensure to maintain platform guidelines.</p>
+                <p class="mt-2 text-xs text-gray-500">2 hours ago</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
