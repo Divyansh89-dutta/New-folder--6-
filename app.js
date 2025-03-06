@@ -7,6 +7,8 @@ const path = require('path');
 const jwt = require('jsonwebtoken');
 const userModel = require('./models/user.model');
 
+const upload = require("./models/multer.model");
+
 // Connect to MongoDB
 require('./config/db.config');
 
@@ -122,6 +124,18 @@ function isLoggedIn(req, res, next){
 // }
 app.get('/edit', (req, res) => {
     res.render('edit');
+});
+app.post('/upload', isLoggedIn, upload.single('profilePicture'), async function(req, res) {
+    if (!req.file) {
+        return res.status(400).send('No file uploaded.');
+    }
+
+    let user = await userModel.findOne({ username: req.user.username });
+    user.profilePicture = req.file.filename; // Store only the filename
+    await user.save();
+
+    console.log("Uploaded File:", req.file.filename);
+    res.redirect('/profile');
 });
 
 // Start Server
