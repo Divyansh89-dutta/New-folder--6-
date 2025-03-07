@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="flex items-center justify-between px-4 py-2 border-b border-gray-700 bg-gray-900">
+        <a href="/profile">
+            <img src="/images/uploads/<%= user.profilePicture %>" alt="Profile" class="w-10 h-10 rounded-full hover:opacity-75 transition duration-200">
+        </a>
+        <i class="ri-twitter-fill text-3xl text-blue-500"></i>
+        <button class="px-4 py-1 text-sm font-blod text-blue-500 border border-blue-500 rounded-full hover:bg-blue-500 hover:text-white transition duration-300">Upgrade</button>
+        <a href=""></a>
+        <a href="/logout">
+            <button class="px-4 text-white py-2 text-sm bg-blue-500 rounded hover:bg-blue-600 transition duration-200">Logout</button>
+        </a>
+    </div>
+    <!-- tab -->
+     <div class="flex justify-around text-gray-500 bg-gray-800 border-b border-gray-700">
+        <button class="py-3 flex-1 text-center text-white border-b-2 border-blue-500 hover:border-gray-400 transition duration-200">For you</button>
+        <button class="py-3 flex-1 text-center text-white border-b-2 border-blue-500 hover:border-gray-400 transition duration-200">Following</button>
+     </div>
+     <!-- Feed section -->
+      <div class="p-4 space-y-6 bg-gray-900 pb-20">
+
+      </div>
+</body>
+</html>

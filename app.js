@@ -6,7 +6,7 @@ const bcrypt = require('bcrypt');
 const path = require('path');
 const jwt = require('jsonwebtoken');
 const userModel = require('./models/user.model');
-
+const tweetModel = require('./models/tweet.model');
 const upload = require("./models/multer.model");
 
 // Connect to MongoDB
@@ -23,6 +23,7 @@ app.use(session({
     secret: "jansi-pagal-hai"
 }));
 app.use(flash());
+app.use(express.static('public'));
 
 // View Engine
 app.set('view engine', 'ejs');
@@ -125,21 +126,81 @@ function isLoggedIn(req, res, next){
 app.get('/edit', (req, res) => {
     res.render('edit');
 });
-app.post('/upload', isLoggedIn, upload.single('profilePicture'), async function(req, res) {
-    if (!req.file) {
-        return res.status(400).send('No file uploaded.');
-    }
+// app.post('/upload', isLoggedIn, upload.single('profilePicture', "document"), async function(req, res){
+//     let user = await userModel.findOne({username: req.user.username});
+//     user.profilePicture = req.file.filename;
+//     await user.save();
+//     console.log(req.file.filename);
+//     res.redirect('/profile',{userModel});
+// })
 
+app.post('/upload', isLoggedIn, upload.single('profilePicture'), async (req, res) => {
     let user = await userModel.findOne({ username: req.user.username });
-    user.profilePicture = req.file.filename; // Store only the filename
+    if (!user) return res.redirect('/profile');
+
+    user.profilePicture = req.file.filename;
     await user.save();
 
-    console.log("Uploaded File:", req.file.filename);
+    console.log("Uploaded File: ", req.file.filename);
     res.redirect('/profile');
 });
 
+app.get('/feed',isLoggedIn,async (req, res) => {
+  let tweet = await tweetModel.find();
+  let profilePicture = await userModel.findOne({ username:req.user.username });
+  let user = await userModel.findOne({ username:req.user.username });
+  res.render('feed', { tweet, profilePicture, user });
+});
+
+app.get('./createpost',isLoggedIn,async (req, res) =>{
+    let user = await userModel.findOne({ username:req.user.username });
+    res.render('createpost', { user });
+})
+
+app.post('/createpost',isLoggedIn,async (req, res) =>{
+    let { tweet } = req.body;
+    let user = await userModel.findOne({ username:req.user.username });
+    await tweetModel.create({
+        tweet,
+        username: user.username,
+        profilePicture: user.profilePicture
+    });
+    res.redirect('/feed');
+})
+
+app.post("/comment/id",isLoggedIn,async (req, res) =>{
+    let { comment } = req.body;
+    let user = await userModel.findOne({ username:req.user.username });
+    let tweet = await tweetModel.findOne({ _id: req.params.id });
+    tweet.comments.push({
+        comment,
+        username: user.username,
+        createdAt: new Date()
+    }); 
+    await tweet.save();
+    res.redirect('/feed');
+}
+)
+app.get('/like/:id',isLoggedIn,async (req, res) =>{
+    let tweet =  await tweetModel.findOne({ _id: req.params.id });
+    if(!tweet.like.includes(req.user.username)){
+        tweet.like.push(req.user.username);
+        await tweet.save();
+    }
+    else{
+        tweet.like = tweet.like.filter(like => like!== req.user.username);
+        await tweet.save();
+    }
+    await tweet.save();
+    res.redirect('/feed');
+    })
+
+    app.get('/delete/:id',isLoggedIn,async (req, res) =>{
+        await tweetModel.findByIdAndDelete({ _id: req.params.id });
+        res.redirect('/feed');
+    })
 // Start Server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+    console.log(`Server started on http://localhost:${PORT}`);
 });
